@@ -1,0 +1,6 @@
+*.o
+*.d
+*.intro
+db_*
+*.exe
+imgui.ini
