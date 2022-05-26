@@ -1,6 +1,6 @@
 include config.mk
 
-EXAMPLE_DIRS := $(shell ls -d */)
+EXAMPLE_DIRS := $(filter-out ext/,$(shell ls -d */))
 
 define \n
 
