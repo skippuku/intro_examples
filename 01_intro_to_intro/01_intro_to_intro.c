@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <assert.h>
 
-// Welcome to intro!
-// To build this project you will need to edit the Makefile in the root directory.
+// Welcome to introcity!
+// To build this project you may will need to edit the config.mk in the root directory with the location of the introcity repository.
 
 // The intro.h header has necessary type information used by generated headers. It also includes function prototypes for introlib.
 #include <intro.h>
 
-// intro parses all types in the file and generates information about them.
+// intro parses all global types in the file and generates information about them.
 
 enum Color {
     COLOR_BLACK,
@@ -50,16 +50,16 @@ typedef struct {
 // the generated file must be included *after* any type declarations.
 // this is because the header must reference the types to get offset/size information.
 
-// intro ignores includes that end with ".intro"
+// intro assumes includes that end with ".intro" are to be generated and ignores them
 #include "01_intro_to_intro.c.intro"
 
-// if the file does not end with ".intro", intro will try to include the file and fail
-// #include "01.intro_to_intro.intro.h" // Error: File not found.
+// if the file name does not end with ".intro", intro will try to include the file and fail
+// #include "types.intro.h" // Error: File not found.
 //
 // if you want to use a different file extension, you can make intro ignore the include.
-// the __INTRO__ macro is always defined by the intro preprocessor.
+// the __INTRO__ macro is defined by the intro preprocessor.
 // #ifndef __INTRO__
-// #include "01_intro_to_intro.intro.h"
+// #include "types.intro.h"
 // #endif
 
 int
@@ -76,15 +76,15 @@ main() {
     jon.name = "Jon Arbuckle";
     jon.pet = &garfield;
 
-    // The easiest way to get information on a type is with the ITYPE macro
+    // The easiest way to get information on a type is with the ITYPE macro.
+    // This evaluates to a pointer of type (IntroType *)
     const IntroType * Person_type = ITYPE(Person);
     printf("Person type name: %s\n", Person_type->name);
 
     // A common thing you may want to do is iterate through the fields of a struct type.
     // Structure information is contained in the i_struct field.
     // Be warned that this field is actually part of a union that is used for different purposes
-    // by different categories of types. You may want to check for the expected category to
-    // avoid undefined behavior.
+    // by different categories of types. You may want to check for the expected category.
     assert(ITYPE(Person)->category == INTRO_STRUCT);
 
     printf("Person struct members:\n");
@@ -97,9 +97,9 @@ main() {
     printf("\n");
 
     // introlib has a builtin function for printing information about a value
-    // values with type information are always passed as (void *) to value and (const IntroType *)
+    // values with type information are always passed as a (const void *) to the value and a (const IntroType *)
     printf("jon = ");
-    intro_print(&jon, ITYPE(Person), NULL); // intro_print takes a pointer for extra options, NULL indicates default
+    intro_print(&jon, ITYPE(Person), NULL); // intro_print takes a pointer for extra options, NULL indicates default options
     printf(";\n\n");
 
     // of course this works on any type you have information about

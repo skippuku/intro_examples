@@ -50,6 +50,7 @@ typedef struct {
         s32 def I(note "intro understands typedefs to be distinct from their origin");
         uint8_t yuh I(note "note the limits on the slider");
     } sub_data I(note "anon structs work");
+    int * ptr_i;
 } Data;
 
 #ifndef __INTRO__
@@ -68,6 +69,13 @@ struct {
 typedef struct {
     float x,y;
 } Vertex;
+
+typedef int intv8 [8];
+
+typedef struct {
+    Vertex * vertices I(length count_vertices);
+    int count_vertices;
+} VertexGroup;
 
 #include "main.cpp.intro"
 
@@ -117,11 +125,36 @@ main(int argc, char * argv []) {
 
     glClearColor(0.1, 0.1, 0.1, 1);
 
+    ImGuiIO & io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("../ext/Cousine-Regular.ttf", 15);
+
+    // looks bad with dpi scaling, i can't find a way to fix it.
+    float xdpi, ydpi;
+    if (SDL_GetDisplayDPI(0, NULL, &xdpi, &ydpi) == 0) {
+        io.DisplayFramebufferScale = ImVec2(xdpi, ydpi);
+        fprintf(stderr, "xdpi: %f, ydpi: %f\n", xdpi, ydpi);
+    } else {
+        fprintf(stderr, "failed to get dpi??\n");
+    }
+
     Data data;
     memset(&data, 0, sizeof(data));
     data.square.position.x = 500;
     data.square.position.y = 200;
     data.square.color = Color3f{1.0, 1.0, 1.0};
+
+    int number = 5;
+    data.ptr_i = &number;
+
+    intv8 num_array;
+    memset(num_array, 0, sizeof(num_array));
+
+    Vertex square [4] = {
+        {-50.0, +50.0},
+        {+50.0, +50.0},
+        {-50.0, -50.0},
+        {+50.0, -50.0},
+    };
 
     bool loop = true;
     while (loop) {
@@ -144,33 +177,35 @@ main(int argc, char * argv []) {
             }
         }
 
+        VertexGroup v_group;
+        v_group.vertices = square;
+        v_group.count_vertices = 4;
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
 
         ImGui::Begin("Test window");
         ImGui::Text("Hello there!");
-        intro_imgui_edit(&data, ITYPE(Data), "data");
+        intro_imgui_edit(&data, ITYPE(Data));
+        //intro_imgui_edit(ITYPE(Data), ITYPE(IntroType), "ITYPE(Data)"); // values could be in a write-protected page
+        intro_imgui_edit(num_array, ITYPE(intv8));
+        intro_imgui_edit(&v_group, ITYPE(VertexGroup));
         ImGui::End();
 
         glClear(GL_COLOR_BUFFER_BIT);
         {
-            Vertex square [4] = {
-                {-50.0, +50.0},
-                {+50.0, +50.0},
-                {-50.0, -50.0},
-                {+50.0, -50.0},
-            };
-
+            Vertex square_moved [4];
+            memcpy(square_moved, square, sizeof(square_moved));
             for (int i=0; i < 4; i++) {
-                square[i].x += data.square.position.x;
-                square[i].y += data.square.position.y;
+                square_moved[i].x += data.square.position.x;
+                square_moved[i].y += data.square.position.y;
             }
 
             glUniform3fv(glc.uniform.color, 1, data.square.color.e);
 
             glBindBuffer(GL_ARRAY_BUFFER, glc.vbo);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(square), square, GL_STREAM_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(square), square_moved, GL_STREAM_DRAW);
 
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }

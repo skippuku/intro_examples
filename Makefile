@@ -9,7 +9,7 @@ endef
 
 .PHONY: all
 all: $(INTROLIB)
-	$(foreach d,$(EXAMPLE_DIRS),@$(MAKE) -C $d$(\n))
+	$(foreach d,$(EXAMPLE_DIRS),@$(MAKE) --no-print-directory -C $d$(\n))
 
 $(INTROLIB) introlib.d: $(INTROLIB_PATH)/introlib.c
 	$(CC) -c $< $(CFLAGS) -MMD -o $(INTROLIB)
