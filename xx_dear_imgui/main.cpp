@@ -27,13 +27,13 @@ typedef enum {
 
 typedef union {
     struct{ float x,y; };
-    float e [2] I(note "same as x and y");
-} Vector2;
+    float e [2] I(~gui_show);
+} Vector2 I(gui_vector);
 
 typedef union {
     struct{ float r, g, b; };
-    float e [3];
-} Color3f;
+    float e [3] I(remove gui_show);
+} Color3f I(gui_edit_color, gui_color {255,0,128,255});
 
 typedef int32_t s32;
 
@@ -44,13 +44,13 @@ typedef struct {
     } square I(note "data for the square in the background");
     int some_int;
     float some_float;
-    double some_double;
+    double some_double I(gui_scale 0.1, min -34, max 57.0, format "%04.2f");
     Character fav_character I(note "enums become combo boxes when they can");
     struct {
         s32 def I(note "intro understands typedefs to be distinct from their origin");
         uint8_t yuh I(note "note the limits on the slider");
     } sub_data I(note "anon structs work");
-    int * ptr_i;
+    int * ptr_i I(~edit);
 } Data;
 
 #ifndef __INTRO__
@@ -66,15 +66,13 @@ struct {
 } glc = {0};
 #endif
 
-typedef struct {
-    float x,y;
-} Vertex;
+typedef Vector2 Vertex;
 
 typedef int intv8 [8];
 
 typedef struct {
     Vertex * vertices I(length count_vertices);
-    int count_vertices;
+    int count_vertices I(~gui_edit);
 } VertexGroup;
 
 #include "main.cpp.intro"
