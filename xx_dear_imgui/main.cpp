@@ -35,24 +35,30 @@ typedef union {
     float e [3] I(remove gui_show);
 } Color3f I(gui_edit_color, gui_color {255,0,128,255});
 
-typedef int32_t s32;
+typedef int32_t s32 I(note "notes can also be applied to types.\nnotice that this note will not appear on types 'int' or 'int32_t'.\nintro treats typedefs as distinct.");
 
 typedef struct {
     struct {
         Vector2 position;
-        Color3f color;
-    } square I(note "data for the square in the background");
+        Color3f color I(color {100,255,255,255});
+    } square I(note "this data is used for the square in the background.\ntry changing it!");
     int some_int;
+    int another_int I(default 1234, note "try dragging this member name to 'some_int' above.\nMembers of the same type can be copied to each other by dragging.");
     float some_float;
-    double some_double I(gui_scale 0.1, min -34, max 57.0, format "%04.2f");
-    Character fav_character I(note "enums become combo boxes when they can");
+    double time I(note "This member has several attributes applied.\n Notice the allowed range.", gui_scale 0.05, min -7.11, max 12.3, format "%04.2f sec.");
+    Character fav_character;
     struct {
-        s32 def I(note "intro understands typedefs to be distinct from their origin");
-        uint8_t yuh I(note "note the limits on the slider");
-    } sub_data I(note "anon structs work");
-    char text_input [256] I(edit_text, default "i have no idea if this works");
+        s32 def I(~note);
+        uint8_t small_int I(note "the above member 'def' would usually inherit the note attribute from the s32 type, but it was removed with I(~note)");
+    } sub_data;
+    char text_input [256] I(edit_text, default "this text was set using the 'default' attribute");
     int * ptr_i I(~edit);
 } Data;
+
+I(apply_to (IntroType) (
+    note "Parts of type information may be in a write-protected page. Of course you should never edit this information anyway.",
+    color {255,200,240,255},
+))
 
 #ifndef __INTRO__
 struct {
