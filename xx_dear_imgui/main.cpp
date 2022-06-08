@@ -50,6 +50,7 @@ typedef struct {
         s32 def I(note "intro understands typedefs to be distinct from their origin");
         uint8_t yuh I(note "note the limits on the slider");
     } sub_data I(note "anon structs work");
+    char text_input [256] I(edit_text, default "i have no idea if this works");
     int * ptr_i I(~edit);
 } Data;
 
@@ -136,7 +137,7 @@ main(int argc, char * argv []) {
     }
 
     Data data;
-    memset(&data, 0, sizeof(data));
+    intro_default(&data, ITYPE(Data));
     data.square.position.x = 500;
     data.square.position.y = 200;
     data.square.color = Color3f{1.0, 1.0, 1.0};
@@ -186,7 +187,7 @@ main(int argc, char * argv []) {
         ImGui::Begin("Test window");
         ImGui::Text("Hello there!");
         intro_imgui_edit(&data, ITYPE(Data));
-        //intro_imgui_edit(ITYPE(Data), ITYPE(IntroType), "ITYPE(Data)"); // values could be in a write-protected page
+        intro_imgui_edit(ITYPE(Data), ITYPE(IntroType)); // values could be in a write-protected page
         intro_imgui_edit(num_array, ITYPE(intv8));
         intro_imgui_edit(&v_group, ITYPE(VertexGroup));
         ImGui::End();
