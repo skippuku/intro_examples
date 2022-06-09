@@ -4,3 +4,4 @@
 db_*
 *.exe
 imgui.ini
+*.cty

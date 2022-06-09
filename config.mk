@@ -6,7 +6,9 @@ INTRO := intro
 INTROLIB_PATH := $(INTRO_PATH)/lib
 
 INC_FLAGS := -I$(INTROLIB_PATH)
-LDFLAGS += $(INTROLIB)
+LDFLAGS = $(INTROLIB)
 CFLAGS += -g
 
 INTROLIB := $(CURRENT_DIR)/introlib.o
+
+SANITIZE_FLAGS := -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer

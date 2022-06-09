@@ -3,12 +3,12 @@
 #include <assert.h>
 
 // Welcome to introcity!
-// To build this project you may will need to edit the config.mk in the root directory with the location of the introcity repository.
+// To build this project you may will need to edit the config.mk in the root directory with the location of the introcity repository as well as the intro parser executable.
 
-// The intro.h header has necessary type information used by generated headers. It also includes function prototypes for introlib.
+// You should include the intro.h header before declaring any types.
 #include <intro.h>
 
-// intro parses all global types in the file and generates information about them.
+// intro parses global types in the file and generates information about them.
 
 enum Color {
     COLOR_BLACK,
@@ -76,7 +76,7 @@ main() {
     jon.name = "Jon Arbuckle";
     jon.pet = &garfield;
 
-    // The easiest way to get information on a type is with the ITYPE macro.
+    // To get information about a type, use the ITYPE macro.
     // This evaluates to a pointer of type (IntroType *)
     const IntroType * Person_type = ITYPE(Person);
     printf("Person type name: %s\n", Person_type->name);
@@ -123,7 +123,8 @@ main() {
     intro_print(&jon, ITYPE(Person), NULL);
     printf(";\n");
 
-    // a fun exercise: change around the values and data types, recompile, watch the program adapt without you changing implementation code!
+    // Try changing around the data types and recompiling with make. Watch the program adapt to these changes.
+    // Also, try taking a look at the generated .intro file. It's a bit ugly, but can give you an idea of how this works.
 
     return 0;
 }
