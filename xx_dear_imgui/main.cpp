@@ -39,8 +39,8 @@ typedef int32_t s32 I(note "notes can also be applied to types.\nnotice that thi
 
 typedef struct {
     struct {
-        Vector2 position;
-        Color3f color I(color {100,255,255,255});
+        Vector2 position I(= {500, 200});
+        Color3f color I(= {0.4, 0.6, 0.8}, color {100,255,255,255});
     } square I(note "this data is used for the square in the background.\ntry changing it!");
     int some_int;
     int another_int I(default 1234, note "try dragging this member name to 'some_int' above.\nMembers of the same type can be copied to each other by dragging.");
@@ -144,9 +144,6 @@ main(int argc, char * argv []) {
 
     Data data;
     intro_default(&data, ITYPE(Data));
-    data.square.position.x = 500;
-    data.square.position.y = 200;
-    data.square.color = Color3f{1.0, 1.0, 1.0};
 
     int number = 5;
     data.ptr_i = &number;
