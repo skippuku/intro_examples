@@ -88,8 +88,8 @@ main() {
     assert(ITYPE(Person)->category == INTRO_STRUCT);
 
     printf("Person struct members:\n");
-    for (int member_i=0; member_i < ITYPE(Person)->i_struct->count_members; member_i++) {
-        const IntroMember * member = &ITYPE(Person)->i_struct->members[member_i];
+    for (int member_i=0; member_i < ITYPE(Person)->count; member_i++) {
+        const IntroMember * member = &ITYPE(Person)->members[member_i];
 
         printf("   (name '%-16s') (offset %-8u) (type name '%-16s'),\n",
                    member->name, member->offset, member->type->name);
