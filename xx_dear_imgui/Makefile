@@ -26,6 +26,9 @@ all: $(EXE)
 $(EXE): $(OBJ)
 	$(CXX) $^ $(LDFLAGS) -o $@
 
+$(INTROLIB):
+	make -C ../ introlib.o
+
 main.o: CXXFLAGS += -Wall
 main.o: main.cpp main.cpp.intro
 

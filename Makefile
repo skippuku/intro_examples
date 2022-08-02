@@ -14,4 +14,7 @@ all: $(INTROLIB)
 $(INTROLIB) introlib.d: $(INTROLIB_PATH)/introlib.c
 	$(CC) -c $< $(CFLAGS) -MMD -o $(INTROLIB)
 
+clean_intro_files:
+	$(foreach d,$(EXAMPLE_DIRS),rm $d/*.intro$(\n))
+
 -include introlib.d

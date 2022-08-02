@@ -85,8 +85,7 @@ main() {
     printf("ser_data.cty was written.\n");
 
     SerData_v2 data2;
-    void * data_handle = intro_load_city_file(&data2, ITYPE(SerData_v2), "ser_data.cty");
-    if (!data_handle) {
+    if (!intro_load_city_file(&data2, ITYPE(SerData_v2), "ser_data.cty")) {
         printf("failed to load file.\n");
         return 1;
     }
@@ -97,8 +96,6 @@ main() {
     intro_print(&data2, ITYPE(SerData_v2), NULL);
     printf("\nlist: ");
     report_list(data2.base);
-
-    free(data_handle);
 
     return 0;
 }
