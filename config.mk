@@ -9,6 +9,6 @@ INC_FLAGS := -I$(INTROLIB_PATH)
 LDFLAGS = $(INTROLIB)
 CFLAGS += -g
 
-INTROLIB := $(CURRENT_DIR)/introlib.o
+INTROLIB := $(CURRENT_DIR)/intro_impl.o
 
 SANITIZE_FLAGS := -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer

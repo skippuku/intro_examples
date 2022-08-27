@@ -33,29 +33,30 @@ typedef union {
 typedef union {
     struct{ float r, g, b; };
     float e [3] I(remove gui_show);
-} Color3f I(gui_edit_color, gui_color {255,0,128,255});
+} Color3f I(gui: edit_color, color {255,0,128,255});
 
-typedef int32_t s32 I(note "notes can also be applied to types.\nnotice that this note will not appear on types 'int' or 'int32_t'.\nintro treats typedefs as distinct.");
+typedef int32_t s32 I(gui_note "notes can also be applied to types.\nnotice that this note will not appear on types 'int' or 'int32_t'.\nintro treats typedefs as distinct.");
 
 typedef struct {
+    I(gui_note "this data is used for the square in the background.\ntry changing it!")
     struct {
         Vector2 position I(= {{500, 200}});
-        Color3f color I(= {{0.4, 0.6, 0.8}}, color {100,255,255,255});
-    } square I(note "this data is used for the square in the background.\ntry changing it!");
+        Color3f color I(= {{0.4, 0.6, 0.8}}, gui_color {100,255,255,255});
+    } square;
     int some_int;
-    int another_int I(default 1234, note "try dragging this member name to 'some_int' above.\nMembers of the same type can be copied to each other by dragging.");
+    int another_int I(fallback 1234, gui_note "try dragging this member name to 'some_int' above.\nMembers of the same type can be copied to each other by dragging.");
     float some_float;
-    double time I(note "This member has several attributes applied.\n Notice the allowed range.", gui_scale 0.05, min -7.11, max 12.3, format "%04.2f sec.");
+    double time I(gui: note "This member has several attributes applied.\n Notice the allowed range.", scale 0.05, min -7.11, max 12.3, format "%04.2f sec.");
     Character fav_character;
     struct {
-        s32 def I(~note);
-        uint8_t small_int I(note "the above member 'def' would usually inherit the note attribute from the s32 type, but it was removed with I(~note)");
+        s32 def I(~gui_note);
+        uint8_t small_int I(gui: note "the above member 'def' would usually inherit the note attribute from the s32 type, but it was removed with I(~note)");
     } sub_data;
-    char text_input [256] I(edit_text, default "this text was set using the 'default' attribute");
-    int * ptr_i I(~edit);
+    char text_input [256] I(gui: edit_text, fallback "this text was set using the 'default' attribute");
+    int * ptr_i I(~gui_edit);
 } Data;
 
-I(apply_to (IntroType) (
+I(apply_to (IntroType) (gui:
     note "Parts of type information may be in a write-protected page. Of course you should never edit this information anyway.",
     color {255,200,240,255},
 ))
@@ -143,7 +144,7 @@ main(int argc, char * argv []) {
     }
 
     Data data;
-    intro_default(&data, ITYPE(Data));
+    intro_fallback(&data, ITYPE(Data));
 
     int number = 5;
     data.ptr_i = &number;

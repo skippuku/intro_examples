@@ -1,7 +1,7 @@
 include ../config.mk
 
 IMGUI_SRC := $(wildcard ../ext/imgui/*.cpp)
-IMGUI_SRC += $(INTROLIB_PATH)/intro_imgui.cpp
+IMGUI_SRC += ../ext/intro_imgui_impl.cpp
 
 OBJ := $(IMGUI_SRC:.cpp=.o) main.o ../ext/gl.o $(INTROLIB)
 CPPFLAGS += $(INC_FLAGS) -I../ext/imgui `sdl2-config --cflags`
