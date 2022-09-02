@@ -4,10 +4,6 @@ SRC := $(wildcard *.c)
 INTRO_FILE := $(addsuffix .intro,$(SRC))
 EXE := $(SRC:%.c=db_%)
 
-SANITIZED_INTROLIB := ../../intro/build/sanitize/introlib.o
-
-#INTROLIB := $(SANITIZED_INTROLIB)
-
 all: $(EXE)
 
 $(EXE): $(SRC) $(INTRO_FILE) $(INTROLIB)
